@@ -56,7 +56,4 @@ write_list_file(val_list, val_list_out)
 print("done")
 
 
-master_matrix = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/1_BBS_classification/1_Master_Matrices/Blood_breast_skin_master.tsv'
-
-
 
