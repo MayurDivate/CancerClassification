@@ -1,4 +1,4 @@
-import Matrix.train_test_val_matrices as tvt
+from Datasets import train_test_val_matrices as tvt
 
 master_matrix = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/1_BBS_classification/1_Master_Matrices/Blood_breast_skin_master.tsv'
 train_list_out = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/1_BBS_classification/2_sample_lists/train_list.txt'
