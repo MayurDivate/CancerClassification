@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from Data.TrainValTestInput import TrainTestValInput
+from Datasets.TrainValTestInput import TrainTestValInput
 
 
 class ReducedInput:
