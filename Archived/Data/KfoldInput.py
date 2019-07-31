@@ -1,4 +1,4 @@
-from Data.InputData import InputData
+from Datasets.InputData import InputData
 
 
 class KfoldInput(InputData):

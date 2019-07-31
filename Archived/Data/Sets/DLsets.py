@@ -1,7 +1,7 @@
 import os
 import random
 
-from Data.Sets.utils import copy_files_to_dir, create_output_dir, cleandir
+from Datasets.Sets.utils import copy_files_to_dir, create_output_dir, cleandir
 
 
 class TrainValTestSets:
