@@ -1,6 +1,6 @@
 import os
 
-from Datasets.train_val_test import Samples
+from Datasets.dl_datasets import Samples
 
 def write_list_file(sample_list, outfile):
     with open(outfile, 'w') as f:
