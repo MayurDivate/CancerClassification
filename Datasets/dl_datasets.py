@@ -1,5 +1,7 @@
 import random
 
+from Matrix.filters import RowFilter
+
 
 class Samples:
 
@@ -42,3 +44,29 @@ class Samples:
         return self.sample_list
 
 
+
+
+class TrainingTestingData:
+
+    def __init__(self, master_mat_file,  train_samples, val_samples, test_samples, outdir):
+        self.master_mat_file = master_mat_file
+        self.train_samples = train_samples
+        self.val_samples = val_samples
+        self.test_sample = test_samples
+        self.outdir = outdir
+
+    def create_dl_datasets(master_mat, train_samples, val_samples, test_samples, outdir):
+
+        print('Training set...')
+        train_set = RowFilter(master_mat, train_samples, os.path.join(outdir, 'train_mat.tsv'))
+        train_set.apply_filter()
+
+        print('Test set...')
+        test_set = RowFilter(master_mat, test_samples, os.path.join(outdir, 'test_mat.tsv'))
+        test_set.apply_filter()
+
+        print('Validation set...')
+        val_set = RowFilter(master_mat, val_samples, os.path.join(outdir, 'val_mat.tsv'))
+        val_set.apply_filter()
+
+        print('Done')
