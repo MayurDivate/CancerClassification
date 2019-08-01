@@ -40,3 +40,5 @@ class Samples:
             random.shuffle(self.sample_list)
 
         return self.sample_list
+
+
