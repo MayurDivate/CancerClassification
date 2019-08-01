@@ -2,26 +2,28 @@ import os
 
 from Datasets.train_val_test import Samples
 
-
 def write_list_file(sample_list, outfile):
     with open(outfile, 'w') as f:
         for sample in sample_list:
             f.write(sample + "\n")
 
 
+# list of samples for each cancer type to divide in train val test sets
+#
 root_dir = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/0_Data/Sample_Lists'
 all_samples = os.path.join(root_dir, 'ALL.samples')
 aml_samples = os.path.join(root_dir, 'AML.samples')
 matureBcell_samples = os.path.join(root_dir, 'Bcell.samples')
 breast_samples = os.path.join(root_dir, 'Breast.samples')
 skin_samples = os.path.join(root_dir, 'Skin.samples')
-
 metastatic_skin_samples = os.path.join(root_dir, 'Skin_metastatic.samples')
 metastatic_breast_samples = os.path.join(root_dir, 'Breast_metastatic.samples')
 
-train_list_out = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_Data_preprocessing/2_sample_lists/train_list.txt'
-test_list_out = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_Data_preprocessing/2_sample_lists/test_list.txt'
-val_list_out = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_Data_preprocessing/2_sample_lists/val_list.txt'
+# output dir for train val test lists
+out_dir = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/1_BBS_classification/2_sample_lists'
+train_list_out = os.path.join(out_dir, 'train_list.txt')
+test_list_out = os.path.join(out_dir, 'test_list.txt' )
+val_list_out = os.path.join(out_dir, 'val_list.txt' )
 
 train_list = []
 test_list = []
