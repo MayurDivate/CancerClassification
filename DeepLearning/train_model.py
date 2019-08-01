@@ -9,7 +9,7 @@ from .plots import Plotter
 
 
 # Train Test Validate
-class TrainTestValidate:
+class ModelTrainer:
     """
     This class object can be initialized using three files i.e. trian, test and validataion CSV
     and the number of features (int) per sample
@@ -28,7 +28,7 @@ class TrainTestValidate:
         self.mname = mname
         self.outdir = outdir
 
-    def run_cnn_model(self, e=20):
+    def run_cnn_model(self, e=20, test=False):
         self.predict_txt = self.mname + "_1D_CNN_predict.txt"
 
         # get the training data
@@ -49,17 +49,17 @@ class TrainTestValidate:
         MyPlotter = Plotter(outimg=self.mname + " 1D CNN", outdir=self.outdir)
         MyPlotter.plot_accuracy_and_loss(train_results)
 
-
-        # get the test data
-        Ptest = Preprocessor([self.test_tsv], self.nfeatures)
-        test_exp, test_lab = Ptest.get_cnn_data()
-        ypred = cnn_model.predict(test_exp)
-        self.print_ypred_test_labels(ypred, test_lab)
-        print("Results dir: ", self.outdir)
+        if test:
+            # get the test data
+            Ptest = Preprocessor([self.test_tsv], self.nfeatures)
+            test_exp, test_lab = Ptest.get_cnn_data()
+            ypred = cnn_model.predict(test_exp)
+            self.print_ypred_test_labels(ypred, test_lab)
+            print("Results dir: ", self.outdir)
 
         return cnn_model, self.get_model_accuracy_and_loss(train_results)
 
-    def run_mlp_model(self, e=20):
+    def run_mlp_model(self, e=20, test=False):
         self.predict_txt = self.mname + "_MLP_predict.txt"
 
         # get the training data
@@ -78,12 +78,13 @@ class TrainTestValidate:
         MyPlotter = Plotter(outimg=self.mname + " MLP", outdir=self.outdir)
         MyPlotter.plot_accuracy_and_loss(train_results)
 
-        # get the test data
-        Ptest = Preprocessor([self.test_tsv], self.nfeatures)
-        test_exp, test_lab = Ptest.get_mlp_data()
-        ypred = mlp_model.predict(test_exp)
-        self.print_ypred_test_labels(ypred, test_lab)
-        print("Results dir: ", self.outdir)
+        if test:
+            # get the test data
+            Ptest = Preprocessor([self.test_tsv], self.nfeatures)
+            test_exp, test_lab = Ptest.get_mlp_data()
+            ypred = mlp_model.predict(test_exp)
+            self.print_ypred_test_labels(ypred, test_lab)
+            print("Results dir: ", self.outdir)
 
         return mlp_model, self.get_model_accuracy_and_loss(train_results)
 
@@ -100,6 +101,7 @@ class TrainTestValidate:
         lab_argmax = np.argmax(labels, 1)
         outfile = os.path.join(self.outdir, self.predict_txt)
 
+        print('make this method dynamic to write all possible classes')
         dictX = [{'ypred_I': ypred[i][0],
                   'ypred_II': ypred[i][1],
                   'ypred_III': ypred[i][2],
