@@ -22,7 +22,7 @@ class DLmodel:
         model.add(tf.keras.layers.Dense(130, activation='relu'))
         model.add(tf.keras.layers.Dense(130, activation='relu'))
         model.add(tf.keras.layers.Dense(130, activation='relu'))
-        # model.add(tf.keras.layers.Dense(15, activation='relu'))
+        model.add(tf.keras.layers.Dense(130, activation='relu'))
 
         model.add(tf.keras.layers.Dense(self.nclasses, activation='softmax'))
 
