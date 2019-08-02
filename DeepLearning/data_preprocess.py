@@ -26,15 +26,16 @@ class Preprocessor:
 
         for k in self.input_files:
             with open(k, 'r') as f:
-                df = pd.read_csv(f, sep='\t', skiprows=1)
+                df = pd.read_csv(f, sep='\t', index_col=0)
                 exp_batch = df.iloc[:, :-1]
-                exp = exp.append(exp_batch, sort=True)
+                exp = exp.append(exp_batch)
 
                 lab_batch = list(df.iloc[:, -1])
-                lab = lab.append(lab_batch, sort=True)
+                lab = lab.append(lab_batch)
 
-        exp = np.array(exp, np.float32)
-        lab = np.array(lab)
+        lab = lab.to_numpy()
+        exp = exp.to_numpy('float32')
+
         lab = self.get_one_hot_encoded_labels(lab)
         return exp, lab
 
