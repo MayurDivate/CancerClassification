@@ -19,7 +19,7 @@ def train_cnn_model():
     cnn_trainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val, nfeatures=13565, nclasses=5,
                                mname="Blood_Breast_Skin_CG_CNN", outdir=resdir)
 
-    model, res = cnn_trainer.run_cnn_model(e=30, test=False)
+    model, res = cnn_trainer.run_cnn_model(e=30, test=True)
 
     model_file = os.path.join(resdir, "Blood_Breast_Skin_CG_CNN.h5")
     model.save(model_file)
