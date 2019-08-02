@@ -43,7 +43,6 @@ class ModelTrainer:
         # initialize model
         cnn_model = DLmodel(self.nfeatures, self.nclasses).get_1D_cnn_model()
 
-
         # train the model
         train_results = cnn_model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
         MyPlotter = Plotter(outimg=self.mname + " 1D CNN", outdir=self.outdir)
@@ -101,19 +100,26 @@ class ModelTrainer:
         lab_argmax = np.argmax(labels, 1)
         outfile = os.path.join(self.outdir, self.predict_txt)
 
-        print('make this method dynamic to write all possible classes')
-        dictX = [{'ypred_I': ypred[i][0],
-                  'ypred_II': ypred[i][1],
-                  'ypred_III': ypred[i][2],
-                  'ypred_IV': ypred[i][3],
-                  'label_I': labels[i][0],
-                  'label_II': labels[i][1],
-                  'label_III': labels[i][2],
-                  'label_IV': labels[i][3],
-                  'ypred_argmax': ypred_argmax[i],
-                  'label_argmax': lab_argmax[i],
-                  'is true': (ypred_argmax[i] == lab_argmax[i])} for i in range(len(lab_argmax))]
+        ylen = ypred.shape[0]
+        yclasses = ypred.shape[1]
 
-        df = pd.DataFrame(dictX)
+        with open(outfile, 'w+') as out:
+            for rec in range(ylen):
+                for i in range(yclasses):
+                    out.write(str(ypred[rec, i]))
+                    out.write('\t')
+                    out.write(str(labels[rec,i]))
 
-        df.to_csv(outfile, sep='\t')
+                out.write('\t')
+                out.write(str(ypred_argmax[rec]))
+                out.write('\t')
+                out.write(str(lab_argmax[rec]))
+                out.write('\t')
+                out.write(str(ypred_argmax[rec] == lab_argmax[rec]))
+                out.write('\n')
+
+
+
+
+
+
