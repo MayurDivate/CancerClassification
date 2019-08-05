@@ -2,6 +2,7 @@ import os
 
 from Datasets.dl_datasets import Samples
 
+
 def write_list_file(sample_list, outfile):
     with open(outfile, 'w') as f:
         for sample in sample_list:
@@ -20,10 +21,10 @@ metastatic_skin_samples = os.path.join(root_dir, 'Skin_metastatic.samples')
 metastatic_breast_samples = os.path.join(root_dir, 'Breast_metastatic.samples')
 
 # output dir for train val test lists
-out_dir = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/1_BBS_classification/2_sample_lists'
+out_dir = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/2_BBS_FPKM5/2_sample_lists/'
 train_list_out = os.path.join(out_dir, 'train_list.txt')
-test_list_out = os.path.join(out_dir, 'test_list.txt' )
-val_list_out = os.path.join(out_dir, 'val_list.txt' )
+test_list_out = os.path.join(out_dir, 'test_list.txt')
+val_list_out = os.path.join(out_dir, 'val_list.txt')
 
 train_list = []
 test_list = []
@@ -40,7 +41,6 @@ for sample_list_file in samples:
     test_list = test_list + test
     val_list = val_list + val
 
-
 meta_skin = [f.rstrip() for f in open(metastatic_skin_samples, 'r')]
 meta_breast = [f.rstrip() for f in open(metastatic_breast_samples, 'r')]
 
@@ -56,6 +56,3 @@ write_list_file(test_list, test_list_out)
 write_list_file(val_list, val_list_out)
 
 print("done")
-
-
-
