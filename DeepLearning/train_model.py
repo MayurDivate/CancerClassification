@@ -107,7 +107,6 @@ class ModelTrainer:
         with open(outfile, 'w+') as out:
             for rec in range(ylen):
                 for i in range(yclasses):
-                    print(rec, ypred.shape, ypred[rec], i, sep=' ;\t')
                     out.write(str(ypred[rec, i]))
                     out.write('\t')
                     out.write(str(labels[rec, i]))
