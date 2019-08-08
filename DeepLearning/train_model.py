@@ -121,7 +121,9 @@ class ModelTrainer:
                 out.write('\n')
 
 
+    def print_model_training_progress(self, res):
 
-
+        df = pd.DataFrame(res)
+        df.to_csv('training_progress.tsv', sep='\t')
 
 
