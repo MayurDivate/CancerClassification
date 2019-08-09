@@ -13,15 +13,15 @@ val = os.path.join(data_dir, 'val_mat.tsv')
 def train_cnn_model():
 
     resdir = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/3_Results/1_BBS_classification'
-
+    mname = 'FPKM_1'
     create_output_dir(resdir)
 
-    cnn_trainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val, nfeatures=9934, nclasses=5,
-                               mname="Blood_Breast_Skin_CG_CNN", outdir=resdir)
+    cnn_trainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val, nfeatures=13565, nclasses=5,
+                               mname=mname, outdir=resdir)
 
     model, res = cnn_trainer.run_cnn_model(e=30, test=True)
 
-    model_file = os.path.join(resdir, "Blood_Breast_Skin_CG_CNN.h5")
+    model_file = os.path.join(resdir, mname + '_1D_CNN.h5')
     model.save(model_file)
     print('done')
 
