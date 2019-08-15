@@ -18,11 +18,11 @@ def train_cnn_model():
     cnn_trainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val, nfeatures=9934, nclasses=5,
                                mname=mname, outdir=resdir)
 
-    model, res = cnn_trainer.run_cnn_model(e=30, test=False)
+    model, res = cnn_trainer.run_cnn_model(e=30, test=True)
 
     model_file = os.path.join(resdir, mname + '_1D_CNN.h5')
     model.save(model_file)
-    print('done')
+    print('FPKM_5')
 
 
 train_cnn_model()

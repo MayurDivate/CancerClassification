@@ -1,5 +1,5 @@
-import random
 import os
+import random
 
 from Matrix.filters import RowFilter
 
@@ -68,3 +68,63 @@ class TrainingTestingData:
         val_set.apply_filter()
 
         print('Done')
+
+
+class Kfold_sets:
+
+    def __init__(self, k, sample_list, outdir, suffix=''):
+        self.k = k
+        self.suffix = suffix
+        self.samples = [file.rstrip() for file in open(sample_list, 'r')]
+        self.set_sizes = self.get_set_sizes()
+        self.outdir = outdir
+
+    def distribute_files_randomly(self):
+
+        print()
+        print(f'distributing files in {self.k} sets')
+        print()
+
+        for i in range(self.k):
+            random.shuffle(self.samples)
+
+        start = 0
+        end = 0
+        k_dict = dict()
+
+        for k in range(self.k - 1):
+            end = end + self.set_sizes[k]
+            key = "k" + str(k + 1)
+            k_dict[key] = self.samples[start:end]
+            start = end
+
+        k = "k" + str(self.k)
+        k_dict[k] = self.samples[start:]
+
+        self.write_k_list(k_dict)
+
+        print("---------- DONE ----------")
+
+    def get_set_sizes(self):
+        ksize = round(1 / self.k, 2)
+        nf = len(self.samples)
+        size = round(ksize * nf)
+        set_sizes = []
+
+        for i in range(self.k):
+            nf = nf - size
+            set_sizes.append(size)
+
+        set_sizes.append(nf)
+        # print(set_sizes)
+        return set_sizes
+
+    def write_k_list(self, k_dict):
+        for key in k_dict:
+
+            outfile = os.path.join(self.outdir, key + '_' + self.suffix+'.txt')
+            print(key, outfile)
+
+            with open(outfile, 'w') as f:
+                for kfile in k_dict[key]:
+                    f.write(kfile + '\n')
