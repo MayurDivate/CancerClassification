@@ -3,12 +3,12 @@ from .models import DLmodel
 from .plots import Plotter
 
 
-# 5-fold cross validation
+# K fold cross validation
 
-class K5FoldCrossValidation():
+class KFoldCrossValidation():
 
-    def __init__(self, k1, k2, k3, k4, k5, mname, nfeatures, nclasses, outdir):
-        self.k = list([k1, k2, k3, k4, k5])
+    def __init__(self, ks_list, mname, nfeatures, nclasses, outdir):
+        self.k_list = ks_list
         self.nfeatures = nfeatures
         self.mname = mname
         self.outdir = outdir
@@ -18,14 +18,14 @@ class K5FoldCrossValidation():
     def run_kfold_cross_validation(self, epochs=20, cnn=True):
 
         res_kfold = list()  # k1-5 results
-        for i in range(len(self.k)):
+        for i in range(len(self.k_list)):
             k_training_sets = list([])  # training sets
             out_file = self.mname + "_K" + str(i + 1)  # plot file basename
 
-            for j in range(len(self.k)):
-                k_val = self.k[i]  # validation set
+            for j in range(len(self.k_list)):
+                k_val = self.k_list[i]  # validation set
                 if i != j:
-                    k_training_sets.append(self.k[j])
+                    k_training_sets.append(self.k_list[j])
 
             # run model
             print(">>> kth fold = " + str(i + 1))
@@ -47,7 +47,7 @@ class K5FoldCrossValidation():
             MyPlotter.plot_accuracy_and_loss(results=train_results)
 
         # calculate the average score
-        self.get_avg_score(res_kfold)
+        # self.get_avg_score(res_kfold)
         print("---- Finished ----")
 
     def get_avg_score(self, res_kfold):
@@ -85,6 +85,9 @@ class K5FoldCrossValidation():
 
 
     def run_mlp_model(self, k_train, k_val, e):
+
+        pass
+        """
         # print("Training sets:", k_train)
         # print("Validation set:", k_val)
 
@@ -99,3 +102,4 @@ class K5FoldCrossValidation():
         model = DLmodel(self.nfeatures, self.nclasses).get_mlp_model()
         print("---- DONE ----")
         return model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
+        """
