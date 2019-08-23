@@ -16,13 +16,13 @@ class DLmodel:
     # method for 1D CNN model
     def get_1D_cnn_model(self):
         model = tf.keras.Sequential()
-        model.add(tf.keras.layers.Conv1D(8, kernel_size=1, activation='relu', input_shape=(1, self.nfeatures)))
+        model.add(tf.keras.layers.Conv1D(10, kernel_size=1, activation='relu', input_shape=(1, self.nfeatures)))
         model.add(tf.keras.layers.Flatten())
-        model.add(tf.keras.layers.Dense(130, activation='relu'))
-        model.add(tf.keras.layers.Dense(130, activation='relu'))
-        model.add(tf.keras.layers.Dense(130, activation='relu'))
-        model.add(tf.keras.layers.Dense(130, activation='relu'))
-        model.add(tf.keras.layers.Dense(130, activation='relu'))
+        model.add(tf.keras.layers.Dense(50, activation='relu'))
+        model.add(tf.keras.layers.Dense(50, activation='relu'))
+        model.add(tf.keras.layers.Dense(50, activation='relu'))
+        model.add(tf.keras.layers.Dense(50, activation='relu'))
+        model.add(tf.keras.layers.Dense(50, activation='relu'))
 
         model.add(tf.keras.layers.Dense(self.nclasses, activation='softmax'))
 
