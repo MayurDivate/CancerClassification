@@ -22,15 +22,12 @@ class DLmodel:
         model = tf.keras.Sequential()
         model.add(tf.keras.layers.Conv1D(10, kernel_size=1, activation='relu', input_shape=(1, self.nfeatures)))
         model.add(tf.keras.layers.Flatten())
-<<<<<<< HEAD
         model.add(tf.keras.layers.Dense(50, activation='relu'))
         model.add(tf.keras.layers.Dense(50, activation='relu'))
         model.add(tf.keras.layers.Dense(50, activation='relu'))
         model.add(tf.keras.layers.Dense(50, activation='relu'))
-=======
         model.add(tf.keras.layers.Dense(1000, activation='relu'))
         model.add(tf.keras.layers.Dense(500, activation='relu'))
->>>>>>> ff99370f6ded6a8cbe4c9b2375cc6ffd9ada95c6
         model.add(tf.keras.layers.Dense(50, activation='relu'))
 
         model.add(tf.keras.layers.Dense(self.nclasses, activation='softmax'))
