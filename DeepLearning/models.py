@@ -20,15 +20,11 @@ class DLmodel:
         tf.random.set_seed(3)
 
         model = tf.keras.Sequential()
-        model.add(tf.keras.layers.Conv1D(10, kernel_size=1, activation='relu', input_shape=(1, self.nfeatures)))
+        model.add(tf.keras.layers.Conv1D(7, kernel_size=1, activation='relu', input_shape=(1, self.nfeatures)))
         model.add(tf.keras.layers.Flatten())
-        model.add(tf.keras.layers.Dense(50, activation='relu'))
-        model.add(tf.keras.layers.Dense(50, activation='relu'))
-        model.add(tf.keras.layers.Dense(50, activation='relu'))
-        model.add(tf.keras.layers.Dense(50, activation='relu'))
-        model.add(tf.keras.layers.Dense(1000, activation='relu'))
-        model.add(tf.keras.layers.Dense(500, activation='relu'))
-        model.add(tf.keras.layers.Dense(50, activation='relu'))
+        model.add(tf.keras.layers.Dense(100, activation='relu'))
+        model.add(tf.keras.layers.Dense(100, activation='relu'))
+        model.add(tf.keras.layers.Dense(100, activation='relu'))
 
         model.add(tf.keras.layers.Dense(self.nclasses, activation='softmax'))
 
@@ -48,10 +44,10 @@ class DLmodel:
 
         model = tf.keras.Sequential()
 
-        model.add(tf.keras.layers.Dense(300, activation='relu', input_shape=(self.nfeatures,)))
-        model.add(tf.keras.layers.Dense(300, activation='relu'))
-        model.add(tf.keras.layers.Dense(300, activation='relu'))
-        model.add(tf.keras.layers.Dense(self.nclasses, activation='softmax'))
+        #model.add(tf.keras.layers.Dense(10, activation='relu', input_shape=(self.nfeatures,)))
+        #model.add(tf.keras.layers.Dense(10, activation='relu'))
+        #model.add(tf.keras.layers.Dense(10, activation='relu'))
+        model.add(tf.keras.layers.Dense(self.nclasses, activation='softmax',input_shape=(self.nfeatures,)))
 
         ## optimizer
         opt = tf.keras.optimizers.RMSprop(lr=0.001)

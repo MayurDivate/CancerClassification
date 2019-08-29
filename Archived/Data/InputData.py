@@ -34,7 +34,7 @@ class InputData:
         with open(f, 'r') as fileX:
             df = pd.read_csv(fileX, sep='\t', header=None)
             filename = self.get_basename(f).replace(".FPKM.txt","")
-            df.columns =  ['Genes', filename]
+            df.columns = ['Genes', filename]
             return self.get_gene_type_data(df)
 
     def get_basename(self,f):

@@ -24,7 +24,6 @@ out_dir = '/Users/n10337547/Projects/1_CUP/1_Blood_Cancer/2_DL_data/1_BBS_classi
 train_list_out = os.path.join(out_dir, 'train_list.txt')
 test_list_out = os.path.join(out_dir, 'test_list.txt' )
 val_list_out = os.path.join(out_dir, 'val_list.txt' )
-
 train_list = []
 test_list = []
 val_list = []
@@ -36,7 +35,6 @@ for sample_list_file in samples:
     train, val, test = dl_sample.get_train_test_val_sets()
 
     train_list = train_list + train
-
     test_list = test_list + test
     val_list = val_list + val
 
