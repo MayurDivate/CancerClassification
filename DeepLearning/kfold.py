@@ -1,5 +1,8 @@
 import os
 
+from Datasets.dl_datasets import KfoldData
+from DeepLearning.data_preprocess import Preprocessor
+from DeepLearning.models import DLmodel
 from .plots import Plotter
 
 
@@ -7,8 +10,9 @@ from .plots import Plotter
 
 class KFoldCrossValidation():
 
-    def __init__(self, ks_list, mname, nfeatures, nclasses, outdir):
+    def __init__(self, ks_list, master_matrix, mname, nfeatures, nclasses, outdir):
         self.k_list = ks_list
+        self.master_matrix = master_matrix
         self.nfeatures = nfeatures
         self.mname = mname
         self.outdir = outdir
@@ -16,12 +20,14 @@ class KFoldCrossValidation():
 
     # entry method to run kfold cross validation
     def run_kfold_cross_validation(self, epochs=20, cnn=True):
-        print()
+        print("run_kfold_cross_validation()")
 
         res_kfold = list()  # k1-5 results
+
         for i in range(len(self.k_list)):
             k_training_sets = list([])  # training sets
-            out_file = self.mname + "_K" + str(i + 1)  # plot file basename
+            out_file = str.replace(self.mname + " K" + str(i + 1), " ", "_")  # plot file basename
+            print(out_file)
 
             for j in range(len(self.k_list)):
                 k_val = self.k_list[i]  # validation set
@@ -42,13 +48,12 @@ class KFoldCrossValidation():
             for key in train_results.history.keys():
                 print(key, " = ", train_results.history[key])
             """
-
             # plot kth fold results
             MyPlotter = Plotter(outimg=out_file, outdir=self.outdir)
             MyPlotter.plot_accuracy_and_loss(results=train_results)
 
         # calculate the average score
-        # self.get_avg_score(res_kfold)
+        self.get_avg_score(res_kfold)
         print("---- Finished ----")
 
     def get_avg_score(self, res_kfold):
@@ -70,7 +75,6 @@ class KFoldCrossValidation():
 
     def get_samples_from_lists(self, k_lists):
         samples = list()
-        print(k_lists)
         for f in k_lists:
             samples = samples + [sample.rstrip() for sample in open(f, 'r')]
 
@@ -78,24 +82,27 @@ class KFoldCrossValidation():
 
     def run_cnn_model(self, k_train, k_val, e):
         print('CNN model')
-        print("Training sets:", [os.path.basename(f) for f in k_train])
-        print("Validation set:", os.path.basename(k_val))
+
         k_train_samples = self.get_samples_from_lists(k_train)
         k_val_samples = self.get_samples_from_lists([k_val])
 
-        print(len(k_train_samples), len(k_val_samples))
+        k_train_out = os.path.join(self.outdir, 'k_train.tsv')
+        k_val_out = os.path.join(self.outdir, 'k_val.tsv')
+
+        KfoldData(self.master_matrix, k_train_samples, k_train_out).create_dl_datasets()
+        KfoldData(self.master_matrix, k_val_samples, k_val_out).create_dl_datasets()
 
         # get data from the file and pre-process it
-        # Ptrain = Preprocessor(input_files=k_train, nfeatures=self.nfeatures)
-        # train_exp, train_lab = Ptrain.get_cnn_data()
+        Ptrain = Preprocessor(input_files=[k_train_out], nfeatures=self.nfeatures)
+        train_exp, train_lab = Ptrain.get_cnn_data()
 
-        # Pval = Preprocessor(input_files=[k_val], nfeatures=self.nfeatures)
-        # val_exp, val_lab = Pval.get_cnn_data()
+        Pval = Preprocessor(input_files=[k_val_out], nfeatures=self.nfeatures)
+        val_exp, val_lab = Pval.get_cnn_data()
 
         # initialize the model
-        # model = DLmodel(self.nfeatures, self.nclasses).get_1D_cnn_model()
-        # print("---- DONE ----")
-        # return model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
+        model = DLmodel(self.nfeatures, self.nclasses).get_1D_cnn_model()
+        print("---- DONE ----")
+        return model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
 
     def run_mlp_model(self, k_train, k_val, e):
 

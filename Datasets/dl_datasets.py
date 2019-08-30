@@ -8,7 +8,12 @@ class Samples:
 
     def __init__(self, sample_list_file, ftrain=0.7, fval=0.1, ftest=0.2, limit=None):
         self.sample_list_file = sample_list_file
-        self.sample_list = [file.rstrip() for file in open(self.sample_list_file, 'r')]
+
+        if not isinstance(sample_list_file, list):
+            self.sample_list = [file.rstrip() for file in open(self.sample_list_file, 'r')]
+        else:
+            self.sample_list = sample_list_file
+
         self.limit = limit
         self.ftrain = ftrain
         self.ftest = ftest
@@ -69,6 +74,21 @@ class TrainingTestingData:
 
         print('Done')
 
+class KfoldData:
+
+    def __init__(self, master_mat_file, samples, outfile):
+        self.master_mat_file = master_mat_file
+        self.samples= samples
+        self.outfile = outfile
+
+    def create_dl_datasets(self):
+        print('kfold data')
+        train_set = RowFilter(self.master_mat_file, self.samples, self.outfile)
+        train_set.apply_filter()
+
+        print('Done')
+
+
 
 class Kfold_sets:
 
@@ -128,3 +148,4 @@ class Kfold_sets:
             with open(outfile, 'w') as f:
                 for kfile in k_dict[key]:
                     f.write(kfile + '\n')
+
