@@ -27,7 +27,7 @@ class Samples:
         val_samples = self.sample_list[ntrain:(ntrain + nval)]
         test_samples = self.sample_list[(ntrain + nval):]
 
-        return train_samples, val_samples, test_samples
+        return train_samples, test_samples, val_samples
 
     def get_dataset_sizes(self):
         nf = len(self.sample_list)

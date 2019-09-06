@@ -28,12 +28,13 @@ class ModelTrainer:
         self.nclasses = self.get_number_of_classes()
         self.mname = mname
         self.outdir = outdir
-        
+
     def get_number_of_classes(self):
         return len([c for c in open(self.labels_file, 'r')])
 
     def run_cnn_model(self, e=20, test=False):
         self.predict_txt = self.mname + "_1D_CNN_predict.txt"
+        self.result_log = os.path.join(self.outdir, self.mname + "_MLP.log")
 
         # get the training data
         Ptrain = Preprocessor(input_files=[self.train_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
@@ -49,12 +50,15 @@ class ModelTrainer:
 
         # train the model
         train_results = cnn_model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
+
+        pd.DataFrame(train_results.history).to_csv(self.result_log, sep='\t')
+
         MyPlotter = Plotter(outimg=self.mname + " 1D CNN", outdir=self.outdir)
         MyPlotter.plot_accuracy_and_loss(train_results)
 
         if test:
             # get the test data
-            Ptest = Preprocessor([self.test_tsv], self.nfeatures,labels_file=self.labels_file)
+            Ptest = Preprocessor([self.test_tsv], self.nfeatures, labels_file=self.labels_file)
             test_exp, test_lab = Ptest.get_cnn_data()
             ypred = cnn_model.predict(test_exp)
             self.print_ypred_test_labels(ypred, test_lab)
@@ -64,6 +68,7 @@ class ModelTrainer:
 
     def run_mlp_model(self, e=20, test=False):
         self.predict_txt = self.mname + "_MLP_predict.txt"
+        self.result_log = os.path.join(self.outdir,self.mname + "_MLP.log")
 
         # get the training data
         Ptrain = Preprocessor(input_files=[self.train_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
@@ -77,6 +82,8 @@ class ModelTrainer:
 
         # train the model
         train_results = mlp_model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
+
+        pd.DataFrame(train_results.history).to_csv(self.result_log, sep='\t')
 
         MyPlotter = Plotter(outimg=self.mname + " MLP", outdir=self.outdir)
         MyPlotter.plot_accuracy_and_loss(train_results)
@@ -107,7 +114,6 @@ class ModelTrainer:
         ylen = ypred.shape[0]
         yclasses = ypred.shape[1]
 
-
         with open(outfile, 'w+') as out:
             for rec in range(ylen):
                 for i in range(yclasses):
@@ -124,10 +130,7 @@ class ModelTrainer:
                 out.write(str(ypred_argmax[rec] == lab_argmax[rec]))
                 out.write('\n')
 
-
     def print_model_training_progress(self, res):
 
         df = pd.DataFrame(res)
         df.to_csv('training_progress.tsv', sep='\t')
-
-
