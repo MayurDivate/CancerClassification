@@ -3,20 +3,20 @@ import os
 from Datasets.utils import create_output_dir
 from DeepLearning.train_model import ModelTrainer
 
-data_dir = '/Users/n10337547/Projects/3_Symposium/2_DL_Data/without_metastatic/3_Train_Val_Test_mats'
+data_dir = '/Users/n10337547/Projects/3_Symposium/2_DL_Data/with_metastatic/3_Train_Val_Test_mats'
 labels = '/Users/n10337547/Projects/1_CUP/2_TCGA/0_Data/TCGA_classes.txt'
 
-resdir = '/Users/n10337547/Projects/3_Symposium/3_Results/without_metastatic/'
+resdir = '/Users/n10337547/Projects/3_Symposium/3_Results/with_metastatic/'
 
-mname = '_WM_FPKM_5'
-ngenes = 13488
+mname = 'WM_FPKM_1'
+ngenes = 16406
 
 # meta 16406, 13488
 # without meta
-
-train = os.path.join(data_dir, 'train_WM_5_mat.tsv')
-test = os.path.join(data_dir, 'test_WM_5_mat.tsv')
-val = os.path.join(data_dir, 'val_WM_5_mat.tsv')
+                                #test_meta_1_mat.tsv
+train = os.path.join(data_dir, 'train_meta_1_mat.tsv')
+test = os.path.join(data_dir, 'test_meta_1_mat.tsv')
+val = os.path.join(data_dir, 'val_meta_1_mat.tsv')
 
 
 def train_model():
@@ -39,11 +39,11 @@ def train_model():
 
 train_model()
 
-mname = 'WM_FPKM_1'
-ngenes = 16406
+mname = 'WM_FPKM_5'
+ngenes = 13488
 
-train = os.path.join(data_dir, 'train_WM_1_mat.tsv')
-test = os.path.join(data_dir, 'test_WM_1_mat.tsv')
-val = os.path.join(data_dir, 'val_WM_1_mat.tsv')
+train = os.path.join(data_dir, 'train_meta_5_mat.tsv')
+test = os.path.join(data_dir, 'test_meta_5_mat.tsv')
+val = os.path.join(data_dir, 'val_meta_5_mat.tsv')
 
 train_model()
