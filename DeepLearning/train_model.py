@@ -34,7 +34,7 @@ class ModelTrainer:
 
     def run_cnn_model(self, e=20, test=False):
         self.predict_txt = self.mname + "_1D_CNN_predict.txt"
-        self.result_log = os.path.join(self.outdir, self.mname + "_MLP.log")
+        self.result_log = os.path.join(self.outdir, self.mname + "_1D_CNN.log")
 
         # get the training data
         Ptrain = Preprocessor(input_files=[self.train_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
