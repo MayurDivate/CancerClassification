@@ -1,6 +1,6 @@
 import os
 
-from Datasets.Sets.utils import create_output_dir
+from Datasets.utils import create_output_dir
 from DeepLearning.train_model import ModelTrainer
 
 
@@ -19,10 +19,10 @@ class ReducedModel:
         test = os.path.join(self.data_dir, 'Test.tsv')
         val = os.path.join(self.data_dir, 'Val.tsv')
 
-        ModelTrainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val,
+        model_trainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val,
                                     nfeatures=self.nfeatures, mname=self.mname, outdir=self.resdir)
 
-        model, res = ModelTrainer.run_mlp_model()
+        model, res = model_trainer.run_mlp_model()
 
         model_file = os.path.join(ModelTrainer.outdir, self.mname + ".h5")
 
@@ -36,11 +36,11 @@ class ReducedModel:
         test = os.path.join(self.data_dir, 'Test.tsv')
         val = os.path.join(self.data_dir, 'Val.tsv')
 
-        ModelTrainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val,
+        model_trainer = ModelTrainer(train_tsv=train, test_tsv=test, val_tsv=val,
                                     nfeatures=self.nfeatures, mname=self.mname,
                                     outdir=self.resdir)
 
-        model, res = ModelTrainer.run_cnn_model()
+        model, res = model_trainer.run_cnn_model()
 
         model_file = os.path.join(ModelTrainer.outdir, self.mname + ".h5")
 
