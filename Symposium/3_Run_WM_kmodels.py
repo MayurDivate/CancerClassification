@@ -6,7 +6,7 @@ from DeepLearning.train_model import ModelTrainer
 data_dir = '/Users/n10337547/Projects/3_Symposium/2_DL_Data/without_metastatic/3_Train_Val_Test_mats'
 labels = '/Users/n10337547/Projects/1_CUP/2_TCGA/0_Data/TCGA_classes.txt'
 
-resdir = '/Users/n10337547/Projects/3_Symposium/3_Results/without_metastatic/'
+resdir = '/Users/n10337547/Projects/3_Symposium/3_Results/keras_without_metastatic/'
 
 mname = 'WM_FPKM_1'
 ngenes = 16406

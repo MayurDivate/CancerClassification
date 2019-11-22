@@ -1,16 +1,11 @@
 import deeplift
-import tensorflow as tf
 from deeplift.conversion import kerasapi_conversion as kc
-import keras as k
+import keras as ks
 
 
-model_file = '/Users/n10337547/Projects/1_CUP/2_TCGA/3_Results/FPKM_1_M/GS_FPKM_1_M_1D_CNN.h5'
-kmodel_file = 'kmodel.h5'
+model_file = '/Users/n10337547/Projects/3_Symposium/3_Results/keras_without_metastatic/WM_FPKM_5_1D_CNN.h5'
 
-kmodel = tf.keras.models.load_model(model_file)
-
-#tf.keras.models.save_model(kmodel, kmodel_file)
-#k.models.save_model(kmodel, kmodel_file)
+kmodel = ks.models.load_model(model_file)
 
 #deeplift_model = kc.convert_model_from_saved_files(model_file)
 
