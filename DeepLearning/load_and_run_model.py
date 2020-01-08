@@ -1,14 +1,14 @@
 import numpy as np
-import os
+from DeepLearning.data_preprocess import 
 from tensorflow.python.keras import models
 import pandas as pd
 
 class PretrainedModel:
-    def __init__(self):
-        self.model_file = '/Users/n10337547/Projects/3_Symposium/3_Results/without_metastatic/WM_FPKM_5_1D_CNN.h5'
-        self.data_file = '/Users/n10337547/Projects/1_CUP/3_dbGaP/3_FPKM_mats/dbGaP_FPKM_5_master.tsv'
-        self.nfeatures = 13488
-        self.outfile = '/Users/n10337547/Projects/1_CUP/3_dbGaP/3_FPKM_mats/dbGaP_FPKM_5_pred.tsv'
+    def __init__(self, model_file, data_file, nf, outfile):
+        self.model_file = model_file
+        self.data_file = data_file
+        self.nfeatures = nf
+        self.outfile = outfile
 
     def load_and_run_model(self):
         model = models.load_model(self.model_file)
