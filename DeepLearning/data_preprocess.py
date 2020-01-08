@@ -35,8 +35,8 @@ class Preprocessor:
 
     def get_cnn_data(self):
         trainX, testX, trainY, testY =  self.split_the_data()
-        trainX = self.logtranformthe_data(self.reshape_data(trainX))
-        testX  = self.logtranformthe_data(self.reshape_data(testX))
+        trainX = self.logtranformthe_data(self.reshape_data(trainX), add_to_zeros=1)
+        testX  = self.logtranformthe_data(self.reshape_data(testX), add_to_zeros=1)
 
         return trainX, testX, trainY, testY
 
@@ -44,8 +44,8 @@ class Preprocessor:
         x = x.to_numpy('float64')
         return x.reshape(x.shape[0], 1, x.shape[1])
 
-    def logtranformthe_data(self, x, add_to_zeros = 0.001):
-        x = np.log(x+ add_to_zeros)
+    def logtranformthe_data(self, x, base=10, add_to_zeros = 0.001):
+        x = np.log(x+ add_to_zeros) / np.log(base)
         return x
 
 # old data preprocesser

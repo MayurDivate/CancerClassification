@@ -24,11 +24,10 @@ class ClassificationReport:
         yreal = np.array(df.iloc[:, self.real_col])
 
         res = confusion_matrix(yreal, ypred)
-        print(res)
         acc = accuracy_score(yreal, ypred)
-        print(acc)
+        print("Accuracy:", acc)
         report = classification_report(yreal, ypred)
-        print(report)
+        print("Classification: ",report)
         out = os.path.join(self.outdir, 'classification_report.txt')
 
         with open(out, 'w') as f:

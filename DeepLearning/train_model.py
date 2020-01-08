@@ -52,6 +52,7 @@ class ModelTrainer:
         if test:
             # get the test data
             ypred = cnn_model.predict(testX)
+
             self.print_ypred_test_labels(ypred, testY)
             print("Results dir: ", self.outdir)
 
