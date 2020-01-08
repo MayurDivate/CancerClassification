@@ -19,15 +19,12 @@ class ModelTrainer:
     laid out in the out.txt
     """
 
-    def __init__(self, train_tsv, test_tsv, val_tsv, nfeatures, labels_file, mname, outdir="./"):
-        self.train_tsv = train_tsv
-        self.test_tsv = test_tsv
-        self.val_tsv = val_tsv
-        self.nfeatures = nfeatures
+    def __init__(self, inputdata, labels_file, mname, outdir="./"):
+        self.inputdata = inputdata
         self.labels_file = labels_file
-        self.nclasses = self.get_number_of_classes()
         self.mname = mname
         self.outdir = outdir
+        self.nclasses = self.get_number_of_classes()
 
     def get_number_of_classes(self):
         return len([c for c in open(self.labels_file, 'r')])
@@ -36,32 +33,26 @@ class ModelTrainer:
         self.predict_txt = self.mname + "_1D_CNN_predict.txt"
         self.result_log = os.path.join(self.outdir, self.mname + "_1D_CNN.log")
 
-        # get the training data
-        Ptrain = Preprocessor(input_files=[self.train_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
-        Pval = Preprocessor(input_files=[self.val_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
-
-        train_exp, train_lab = Ptrain.get_cnn_data()
-        val_exp, val_lab = Pval.get_cnn_data()
-
-        print(val_exp.shape, train_exp.shape)
+        # get the train and test data
+        trainX, testX, trainY, testY = Preprocessor(self.inputdata, self.labels_file).get_cnn_data()
+        self.nfeatures = trainX.shape[-1]
 
         # initialize model
         cnn_model = DLmodel(self.nfeatures, self.nclasses).get_1D_cnn_model()
 
         # train the model
-        train_results = cnn_model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
+        train_results = cnn_model.fit(trainX, trainY, epochs=e, validation_split=0.125)
 
         pd.DataFrame(train_results.history).to_csv(self.result_log, sep='\t')
 
         MyPlotter = Plotter(outimg=self.mname + " 1D CNN", outdir=self.outdir)
         MyPlotter.plot_accuracy_and_loss(train_results)
 
+
         if test:
             # get the test data
-            Ptest = Preprocessor([self.test_tsv], self.nfeatures, labels_file=self.labels_file)
-            test_exp, test_lab = Ptest.get_cnn_data()
-            ypred = cnn_model.predict(test_exp)
-            self.print_ypred_test_labels(ypred, test_lab)
+            ypred = cnn_model.predict(testX)
+            self.print_ypred_test_labels(ypred, testY)
             print("Results dir: ", self.outdir)
 
         return cnn_model, self.get_model_accuracy_and_loss(train_results)
@@ -71,17 +62,13 @@ class ModelTrainer:
         self.result_log = os.path.join(self.outdir,self.mname + "_MLP.log")
 
         # get the training data
-        Ptrain = Preprocessor(input_files=[self.train_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
-        Pval = Preprocessor(input_files=[self.val_tsv], nfeatures=self.nfeatures, labels_file=self.labels_file)
-
-        train_exp, train_lab = Ptrain.get_mlp_data()
-        val_exp, val_lab = Pval.get_mlp_data()
+        trainX, testX, trainY, testY = Preprocessor(self.inputdata, self.labels_file).get_mlp_data()
 
         # initialize model
         mlp_model = DLmodel(self.nfeatures, self.nclasses).get_mlp_model()
 
         # train the model
-        train_results = mlp_model.fit(train_exp, train_lab, epochs=e, validation_data=(val_exp, val_lab))
+        train_results = mlp_model.fit(trainX, trainY, epochs=e, validation_split=0.125)
 
         pd.DataFrame(train_results.history).to_csv(self.result_log, sep='\t')
 
@@ -90,10 +77,8 @@ class ModelTrainer:
 
         if test:
             # get the test data
-            Ptest = Preprocessor([self.test_tsv], self.nfeatures, labels_file=self.labels_file)
-            test_exp, test_lab = Ptest.get_mlp_data()
-            ypred = mlp_model.predict(test_exp)
-            self.print_ypred_test_labels(ypred, test_lab)
+            ypred = mlp_model.predict(testX)
+            self.print_ypred_test_labels(ypred, testY)
             print("Results dir: ", self.outdir)
 
         return mlp_model, self.get_model_accuracy_and_loss(train_results)

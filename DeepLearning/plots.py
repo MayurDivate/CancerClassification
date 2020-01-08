@@ -16,7 +16,7 @@ class Plotter:
         self.outimg = str.replace(self.outimg, " ", "_")
         outfile = os.path.join(self.outdir, self.outimg)
 
-        # print(results.history.keys())
+        # print(self.outimg)
 
         # loss plot
         plt.figure()
