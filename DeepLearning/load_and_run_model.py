@@ -1,22 +1,25 @@
 import numpy as np
-from DeepLearning.data_preprocess import 
+from DeepLearning.data_preprocess import Preprocessor
 from tensorflow.python.keras import models
 import pandas as pd
 
 class PretrainedModel:
-    def __init__(self, model_file, data_file, nf, outfile):
+    def __init__(self, model_file, data_file, nf, outfile, label_file):
         self.model_file = model_file
         self.data_file = data_file
         self.nfeatures = nf
         self.outfile = outfile
+        self.label_file  = label_file
 
     def load_and_run_model(self):
         model = models.load_model(self.model_file)
+        pp = Preprocessor(self.data_file, self.label_file)
         exp = self.get_cnn_data()
         res = model.predict(exp)
         self.print_ypred_test_labels(res)
 
     def get_cnn_data(self):
+
         exp = self.get_mlp_data()
         exp = exp.reshape(exp.shape[0], 1, self.nfeatures)
         return exp
