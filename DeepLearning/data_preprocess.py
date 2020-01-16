@@ -19,6 +19,16 @@ class Preprocessor:
 
         return trainX, testX, trainY, testY
 
+    def get_test_data(self):
+        dataX = pd.read_csv(self.input_files, sep='\t', index_col=0)
+        #dataY = data.iloc[:, -1]  # last column contains labels
+        #dataX = data.iloc[:, :-1]  # droping last columns
+        dataX = self.logtranformthe_data(self.reshape_data(dataX))
+        #dataY = self.get_one_encoded_labels(dataY)
+
+        return dataX
+
+
     def get_one_encoded_labels(self, y):
         y = y.to_numpy().reshape(-1, 1)
         labels = np.array([label.strip() for label in open(self.labels_file)]).reshape(-1,1)
@@ -44,7 +54,7 @@ class Preprocessor:
         x = x.to_numpy('float64')
         return x.reshape(x.shape[0], 1, x.shape[1])
 
-    def logtranformthe_data(self, x, base=10, add_to_zeros = 0.001):
+    def logtranformthe_data(self, x, base=10, add_to_zeros = 0.01):
         x = np.log(x+ add_to_zeros) / np.log(base)
         return x
 
