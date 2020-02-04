@@ -10,7 +10,7 @@ class Preprocessor:
         self.labels_file = label_file
 
     def split_the_data(self):
-        data = pd.read_csv(self.input_files, sep='\t', index_col=0)
+        data = pd.read_csv(self.input_files, nrows=50,sep='\t', index_col=0)
         dataY = data.iloc[:, -1] # last column contains labels
         data = data.iloc[:, :-1] # droping last columns
         trainX, testX, trainY, testY = train_test_split(data, dataY, test_size=0.2, stratify=dataY)
@@ -18,16 +18,6 @@ class Preprocessor:
         testY = self.get_one_encoded_labels(testY)
 
         return trainX, testX, trainY, testY
-
-    def get_test_data(self):
-        dataX = pd.read_csv(self.input_files, sep='\t', index_col=0)
-        #dataY = data.iloc[:, -1]  # last column contains labels
-        #dataX = data.iloc[:, :-1]  # droping last columns
-        dataX = self.logtranformthe_data(self.reshape_data(dataX))
-        #dataY = self.get_one_encoded_labels(dataY)
-
-        return dataX
-
 
     def get_one_encoded_labels(self, y):
         y = y.to_numpy().reshape(-1, 1)
@@ -44,18 +34,33 @@ class Preprocessor:
         return trainX, testX, trainY, testY
 
     def get_cnn_data(self):
+
         trainX, testX, trainY, testY =  self.split_the_data()
-        trainX = self.logtranformthe_data(self.reshape_data(trainX), add_to_zeros=1)
-        testX  = self.logtranformthe_data(self.reshape_data(testX), add_to_zeros=1)
+        trainX = self.reshape_data(trainX)
+
+        print(trainX.shape)
+
+        #print(trainX)
+
+        testX = self.reshape_data(testX)
+
+        # Log transformation
+        #trainX = self.logtranformthe_data(self.reshape_data(trainX), add_to_zeros=1)
+        #testX  = self.logtranformthe_data(self.reshape_data(testX), add_to_zeros=1)
 
         return trainX, testX, trainY, testY
 
     def reshape_data(self,x):
         x = x.to_numpy('float64')
-        return x.reshape(x.shape[0], 1, x.shape[1])
 
-    def logtranformthe_data(self, x, base=10, add_to_zeros = 0.01):
-        x = np.log(x+ add_to_zeros) / np.log(base)
+        # 1 columns
+        return x.reshape(x.shape[0], x.shape[1], 1)
+
+        # 1 row
+        # return x.reshape(x.shape[0], 1, x.shape[1])
+
+    def logtranformthe_data(self, x, base=10, add_to_zeros = 1):
+        x = np.log(x + add_to_zeros) / np.log(base)
         return x
 
 # old data preprocesser

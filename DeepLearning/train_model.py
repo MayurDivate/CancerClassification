@@ -19,11 +19,12 @@ class ModelTrainer:
     laid out in the out.txt
     """
 
-    def __init__(self, inputdata, labels_file, mname, outdir="./"):
+    def __init__(self, inputdata, labels_file, mname, nfeatures , outdir="./"):
         self.inputdata = inputdata
         self.labels_file = labels_file
         self.mname = mname
         self.outdir = outdir
+        self.nfeatures = nfeatures
         self.nclasses = self.get_number_of_classes()
 
     def get_number_of_classes(self):
@@ -35,7 +36,8 @@ class ModelTrainer:
 
         # get the train and test data
         trainX, testX, trainY, testY = Preprocessor(self.inputdata, self.labels_file).get_cnn_data()
-        self.nfeatures = trainX.shape[-1]
+
+        #print(">>>",self.nfeatures)
 
         # initialize model
         cnn_model = DLmodel(self.nfeatures, self.nclasses).get_1D_cnn_model()

@@ -9,14 +9,14 @@ from sklearn.metrics import confusion_matrix
 
 class ClassificationReport:
 
-    def __init__(self, model_res_file, ypred_col, lfile, real_col, outdir):
+    def __init__(self, model_res_file, ypred_col, lfile, real_col, outfile):
         self.model_res_file = model_res_file
         self.ypred_col = ypred_col
         self.real_col = real_col
 
         self.lfile = lfile
         self.labels = [label.rstrip() for label in open(self.lfile, 'r')]
-        self.outdir = outdir
+        self.outfile = outfile
 
     def parse_results(self):
         df = pd.read_csv(self.model_res_file, sep='\t', header=None).dropna(axis=1)
@@ -28,7 +28,7 @@ class ClassificationReport:
         print("Accuracy:", acc)
         report = classification_report(yreal, ypred)
         print("Classification: ",report)
-        out = os.path.join(self.outdir, 'classification_report.txt')
+        out = os.path.join(self.outfile)
 
         with open(out, 'w') as f:
             f.write(report)
