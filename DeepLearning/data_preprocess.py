@@ -10,7 +10,7 @@ class Preprocessor:
         self.labels_file = label_file
 
     def split_the_data(self):
-        data = pd.read_csv(self.input_files, nrows=50,sep='\t', index_col=0)
+        data = pd.read_csv(self.input_files, sep='\t', index_col=0)
         dataY = data.iloc[:, -1] # last column contains labels
         data = data.iloc[:, :-1] # droping last columns
         trainX, testX, trainY, testY = train_test_split(data, dataY, test_size=0.2, stratify=dataY)
